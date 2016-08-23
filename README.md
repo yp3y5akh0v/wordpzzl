@@ -1,6 +1,8 @@
 # wordpzzl
 simple word puzzle game
 
+![Image of wordpzzl](/wordpzzl.png)
+
 This project was built using [LibGDX framework](https://libgdx.badlogicgames.com/).
 
 ### Running/Debugging/Packaging
