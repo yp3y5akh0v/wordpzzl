@@ -38,6 +38,38 @@ public class GameScreen implements Screen, InputProcessor {
     private boolean isDragged;
     private int countTouchUp;
 
+    private int[] vowel = {
+            0, // a
+            4, // e
+            8, // i
+            14, // o
+            20 // u
+    };
+
+    private int[] consonant = {
+            1, // b
+            2, // c
+            3, // d
+            5, // f
+            6, // g
+            7, // h
+            9, // j
+            10, // k
+            11, // l
+            12, // m
+            13, // n
+            15, // p
+            16, // q
+            17, // r
+            18, // s
+            19, // t
+            21, // v
+            22, // w
+            23, // x
+            24, // y
+            25, // z
+    };
+
     public GameScreen(final Game game) {
 
         this.game = game;
@@ -62,13 +94,19 @@ public class GameScreen implements Screen, InputProcessor {
         isDragged = false;
     }
 
+    private int vowelOrConsonant() {
+        return random.nextInt(2) == 0 ?
+                random.nextInt(vowel.length) :
+                random.nextInt(consonant.length);
+    }
+
     private void loadLetters() throws ReflectionException {
         for (Object letterObject : map.getLayers()
                 .get("letter_object")
                 .getObjects()
                 .getByType(ClassReflection.forName("com.badlogic.gdx.maps.objects.RectangleMapObject"))) {
             Rectangle rect = ((RectangleMapObject) letterObject).getRectangle();
-            Letter letter = new Letter(ActorState.GREY, random.nextInt(26), rect.x, rect.y);
+            Letter letter = new Letter(ActorState.GREY, vowelOrConsonant(), rect.x, rect.y);
             letter.setSize(letter.getWidth() / 2, letter.getHeight() / 2);
             stage.addActor(letter);
         }
@@ -193,7 +231,7 @@ public class GameScreen implements Screen, InputProcessor {
                     for (Map.Entry<Integer, Integer> entry : newLetterPosCount.entrySet()) {
                         for (int i = 0; i < entry.getValue(); i++) {
                             Letter letter = new Letter(ActorState.GREY,
-                                    random.nextInt(26),
+                                    vowelOrConsonant(),
                                     entry.getKey(),
                                     640 + 64 * i);
                             letter.setSize(letter.getWidth() / 2, letter.getHeight() / 2);
