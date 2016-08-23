@@ -10,4 +10,4 @@ This project was built using [LibGDX framework](https://libgdx.badlogicgames.com
 - Use `escape key` to pause game
 
 ### Running/Debugging/Packaging
-Download [gradle tool](https://gradle.org/) and visit [this](https://github.com/libgdx/libgdx/wiki/Gradle-on-the-Commandline#gradle-tasks-are-failing) documentation.
+Download [gradle tool](https://gradle.org/) and visit [this](https://github.com/libgdx/libgdx/wiki/Gradle-on-the-Commandline) documentation.
