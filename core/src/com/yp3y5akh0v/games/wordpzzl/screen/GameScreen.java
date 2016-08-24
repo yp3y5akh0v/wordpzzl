@@ -96,8 +96,8 @@ public class GameScreen implements Screen, InputProcessor {
 
     private int vowelOrConsonant() {
         return random.nextInt(2) == 0 ?
-                random.nextInt(vowel.length) :
-                random.nextInt(consonant.length);
+                vowel[random.nextInt(vowel.length)] :
+                consonant[random.nextInt(consonant.length)];
     }
 
     private void loadLetters() throws ReflectionException {
