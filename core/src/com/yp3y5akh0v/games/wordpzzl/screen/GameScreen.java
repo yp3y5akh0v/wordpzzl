@@ -36,7 +36,8 @@ public class GameScreen implements Screen, InputProcessor {
 
     private Random random;
     private boolean isDragged;
-    private int countTouchUp;
+    private boolean isTwiceGreenDarkClicked;
+    private Letter greenDarkClicked;
 
     private int[] vowel = {
             0, // a
@@ -90,7 +91,6 @@ public class GameScreen implements Screen, InputProcessor {
 
         shapeRenderer = new ShapeRenderer();
 
-        countTouchUp = 0;
         isDragged = false;
     }
 
@@ -201,8 +201,16 @@ public class GameScreen implements Screen, InputProcessor {
             GameLogic gameLogic = GameLogic.getInstance();
             if (gameLogic.sizeOfSequence() == 1 && hitLetter == gameLogic.peekFromSequence()) {
                 gameLogic.clearSequence();
+                ResourceManager.getInstance().getSelectSound().play();
             } else
                 gameLogic.pushToSequence(hitLetter);
+            if (hitLetter.getState() == ActorState.GREEN_DARK) {
+                isTwiceGreenDarkClicked = greenDarkClicked == hitLetter;
+                greenDarkClicked = hitLetter;
+            } else {
+                greenDarkClicked = null;
+                isTwiceGreenDarkClicked = false;
+            }
         }
         isDragged = false;
         return true;
@@ -215,7 +223,7 @@ public class GameScreen implements Screen, InputProcessor {
         if (hitLetter != null) {
             GameLogic gameLogic = GameLogic.getInstance();
             if (hitLetter.getState() == ActorState.GREEN_DARK) {
-                if (isDragged || ++countTouchUp > 1) {
+                if (isDragged || isTwiceGreenDarkClicked) {
                     ResourceManager.getInstance().getWordSound().play();
                     HashMap<Integer, Integer> newLetterPosCount = new HashMap<>();
                     for (Letter letter : gameLogic.getSequence()) {
@@ -227,7 +235,6 @@ public class GameScreen implements Screen, InputProcessor {
                     }
                     gameLogic.calculateScore();
                     gameLogic.clearSequence();
-                    countTouchUp = 0;
                     for (Map.Entry<Integer, Integer> entry : newLetterPosCount.entrySet()) {
                         for (int i = 0; i < entry.getValue(); i++) {
                             Letter letter = new Letter(ActorState.GREY,
@@ -240,8 +247,7 @@ public class GameScreen implements Screen, InputProcessor {
                     }
                     newLetterPosCount.clear();
                 }
-            } else
-                countTouchUp = 0;
+            }
         }
         isDragged = false;
         return true;
